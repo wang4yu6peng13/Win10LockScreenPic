@@ -6,11 +6,12 @@ import os
 import shutil
 import argparse
 
-
 # 锁屏画报路径，将xxx 替换为自己的user名称,new_path 根据自己的需要进行更改
 # PATH = r"C:\Users\Yupeng Wang" \
 #       r"\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets\\"
 # NEW_PATH = r'E:\testPic\\'
+PATH = os.environ[
+           'LOCALAPPDATA'] + "\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets\\"
 
 
 def rename_and_save_pic(file_path, new_path):
@@ -25,15 +26,15 @@ def rename_and_save_pic(file_path, new_path):
 
 def main():
     parser = argparse.ArgumentParser(description='Get Win10 LockScreen Pictures')  # 命令行参数解析对象
-    parser.add_argument('-u', dest='username', help='Your account name on Windows 10(use "")')
+    # parser.add_argument('-u', dest='username', help='Your account name on Windows 10(use "")')
     parser.add_argument('-t', dest='target', help=r'The target path which you want to copy to(end with "\")')
 
     args = parser.parse_args()  # 解析命令行参数
-    username = args.username
+    # username = args.username
     target = args.target
 
-    if username and target:
-        PATH = "C:\\Users\\%s\\AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets\\" % username
+    if target:
+        # PATH = "C:\\Users\\%s\\AppData\\Local\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets\\" % username
         NEW_PATH = target if target.endswith('\\') else target + '\\'
         rename_and_save_pic(PATH, NEW_PATH)
     else:
@@ -43,4 +44,7 @@ def main():
 
 if __name__ == '__main__':
     # rename_and_save_pic(PATH, NEW_PATH)
+    # rename_and_save_pic(os.environ['LOCALAPPDATA']+"\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets\\", "E:\\0test\\")
+    # print(os.environ['LOCALAPPDATA'])
+    # print(u"%LOCALAPPDATA%\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets")
     main()
