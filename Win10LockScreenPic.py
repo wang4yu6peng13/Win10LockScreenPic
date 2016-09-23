@@ -5,6 +5,7 @@
 import os
 import shutil
 import argparse
+from PIL import Image
 
 # 锁屏画报路径，将xxx 替换为自己的user名称,new_path 根据自己的需要进行更改
 # PATH = r"C:\Users\Yupeng Wang" \
@@ -20,8 +21,20 @@ def rename_and_save_pic(file_path, new_path):
     if os.path.exists(new_path):
         i = len(os.listdir(path=new_path))
         for file in os.listdir(path=file_path):
-            i += 1
-            shutil.copy(file_path + file, new_path + 'picture_%d' % i + '.jpg')
+            # print(file,imghdr.what(file_path+file))
+            # i += 1
+            # shutil.copy(file_path + file, new_path + 'picture_%d' % i + '.jpg')
+            # shutil.copy(file_path + file, new_path + file + '.' + str(imghdr.what(file_path + file)))
+            try:
+                im = Image.open(file_path + file)
+                width, height = im.size
+                if (width == 1080 and height == 1920) or (width == 1920 and height == 1080):
+                    i += 1
+                    rename = new_path + 'picture_%d' % i + '.jpg'
+                    shutil.copy(file_path + file, rename)
+                    print('\t', file, "=>", rename, width, height)
+            except OSError as e:
+                print('\t', file, "is not a picture!\nMSG:", e)
 
 
 def main():
@@ -47,4 +60,6 @@ if __name__ == '__main__':
     # rename_and_save_pic(os.environ['LOCALAPPDATA']+"\\Packages\\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\\LocalState\\Assets\\", "E:\\0test\\")
     # print(os.environ['LOCALAPPDATA'])
     # print(u"%LOCALAPPDATA%\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets")
+    # print(PATH)
     main()
+# python3 Win10LockScreenPic.py -t E:\\0test
